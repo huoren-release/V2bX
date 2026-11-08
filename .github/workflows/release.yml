@@ -113,7 +113,12 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.25.0'
+          # 1.25.0 carried ~100 stdlib advisories (crypto/tls, net/http,
+          # html/template, archive/*, mime/multipart, net/url, os, encoding/xml).
+          # 1.26.10 fixes all of them. Do NOT go to 1.27 yet: Go 1.27 tightens
+          # linkname handling and github.com/wyx2685/sing-box_mod's v2rayhttp
+          # pull of http2.(*Transport).connPool then fails to link.
+          go-version: '1.26.10'
 
       - name: Get project dependencies
         run: |
