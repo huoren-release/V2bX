@@ -11,6 +11,7 @@ on:
       - "go.mod"
       - "go.sum"
       - ".github/workflows/release.yml"
+      - "script/**"
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -20,6 +21,9 @@ on:
       - ".github/workflows/release.yml"
   release:
     types: [published]
+
+permissions:
+  contents: write
 
 jobs:
 

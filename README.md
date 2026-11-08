@@ -47,12 +47,14 @@ A V2board node server based on multi core, modified from XrayR.
 ### 一键安装
 
 ```
-wget -N https://raw.githubusercontent.com/wyx2685/V2bX-script/master/install.sh && bash install.sh
+wget -N https://raw.githubusercontent.com/huoren-release/V2bX/dev_new/script/install.sh && bash install.sh
 ```
 
 ### 手动安装
 
 [手动安装教程](https://v2bx.v-50.me/v2bx/v2bx-xia-zai-he-an-zhuang/install/manual)
+
+一键安装脚本、`V2bX.sh` 管理命令与 `initconfig.sh` 均在**本仓库** [`script/`](script/) 目录，不依赖上游 `V2bX-script` 仓库。
 
 ## 构建
 ``` bash
