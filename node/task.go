@@ -159,7 +159,10 @@ func (c *Controller) nodeInfoMonitor() (err error) {
 		}
 		if c.userReportPeriodic.Interval != newN.PushInterval &&
 			newN.PushInterval != 0 {
-			c.userReportPeriodic.Interval = newN.PullInterval
+			// 这里原本写的是 PullInterval，复制粘贴错了：用户流量上报用的是
+			// PushInterval，写成 PullInterval 会让本节点永远满足下面的比较条件，
+			// 每轮节点信息刷新都 Close+Start 一次上报任务。
+			c.userReportPeriodic.Interval = newN.PushInterval
 			c.userReportPeriodic.Close()
 			_ = c.userReportPeriodic.Start(false)
 		}

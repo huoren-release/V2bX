@@ -187,13 +187,16 @@ func (l *Limiter) CheckLimit(taguuid string, ip string, isTcp bool, noSSUDP bool
 
 	limit := int64(determineSpeedLimit(nodeLimit, userLimit)) * 1000000 / 8 // If you need the Speed limit
 	if limit > 0 {
+		// 先查已有桶。原实现每次建连都 NewBucketWithQuantum 一个再被 LoadOrStore
+		// 丢掉，等于每连接白白分配一个 300ms 粒度的桶（以及其中的计时器），纯垃圾。
+		if v, ok := l.SpeedLimiter.Load(taguuid); ok {
+			return v.(*ratelimit.Bucket), false
+		}
 		Bucket = ratelimit.NewBucketWithQuantum(time.Second, limit, limit) // Byte/s
 		if v, ok := l.SpeedLimiter.LoadOrStore(taguuid, Bucket); ok {
 			return v.(*ratelimit.Bucket), false
-		} else {
-			l.SpeedLimiter.Store(taguuid, Bucket)
-			return Bucket, false
 		}
+		return Bucket, false
 	} else {
 		return nil, false
 	}
